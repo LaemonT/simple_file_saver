@@ -1,0 +1,38 @@
+name: simple_file_saver
+description: Plugin that allows you to save files to a public or shared directory such as the Downloads folder in Android and Files in iOS.
+homepage: https://github.com/LaemonT/simple_file_saver
+repository: https://github.com/LaemonT/simple_file_saver/tree/main/simple_file_saver
+version: 1.0.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: simple_file_saver_android
+      ios:
+        default_package: simple_file_saver_ios
+
+dependencies:
+  flutter:
+    sdk: flutter
+  simple_file_saver_android:
+    path: ../simple_file_saver_android
+  simple_file_saver_ios:
+    path: ../simple_file_saver_ios
+  simple_file_saver_platform_interface:
+    path: ../simple_file_saver_platform_interface
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  plugin_platform_interface: ^2.1.7
+
+topics:
+  - files
+  - save-file
+  - file-saver
