@@ -17,8 +17,7 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
 
-  simple_file_saver_platform_interface:
-    path: ../../simple_file_saver_platform_interface
+  simple_file_saver_platform_interface: ^1.0.0
 
 dev_dependencies:
   integration_test:
