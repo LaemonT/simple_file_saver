@@ -1,6 +1,9 @@
 # Flutter simple_file_saver plugin
 
-The [`simple_file_saver`][0] plugin is built with the Flutter's federated architecture. A detailed explanation of the federated plugin concept can be found in the [Flutter documentation](https://flutter.dev/docs/development/packages-and-plugins/developing-packages#federated-plugins) and a lesson from their [Flutter channel](https://youtu.be/GAnSNplNpCA). 
+The [`simple_file_saver`][0] plugin is built with the Flutter's federated architecture. 
+
+You may read the [Flutter documentation](https://flutter.dev/docs/development/packages-and-plugins/developing-packages#federated-plugins) and watch the [Flutter channel](https://youtu.be/GAnSNplNpCA)
+for more information about the federated plugin concept.
 
 The plugin is separated into the following packages:
 

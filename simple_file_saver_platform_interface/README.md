@@ -1,18 +1,21 @@
 # simple_file_saver_platform_interface
 
-A new Flutter plugin project.
+A common platform interface for the [`simple_file_saver`][1] plugin.
 
-## Getting Started
+This interface allows platform-specific implementations of the `simple_file_saver`
+plugin, as well as the plugin itself, to ensure they are supporting the
+same interface.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+You may read the [Flutter documentation](https://flutter.dev/docs/development/packages-and-plugins/developing-packages#federated-plugins) and watch the [Flutter channel](https://youtu.be/GAnSNplNpCA) 
+for more information about the federated plugin concept.
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Usage
 
-The plugin project was generated without specifying the `--platforms` flag, no platforms are currently supported.
-To add platforms, run `flutter create -t plugin --platforms <platforms> .` in this directory.
-You can also find a detailed instruction on how to add platforms in the `pubspec.yaml` at https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
+To implement a new platform-specific implementation of `simple_file_saver`, extend
+[`SimpleFileSaverPlatform`][2] with an implementation that performs the
+platform-specific behavior, and when you register your plugin, set the default
+`SimpleFileSaverPlatform` by calling
+`SimpleFileSaverPlatform.instance = SimpleFileSaverX()`.
+
+[1]: ../
+[2]: lib/simple_file_saver_platform_interface.dart
