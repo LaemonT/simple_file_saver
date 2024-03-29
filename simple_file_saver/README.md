@@ -1,15 +1,27 @@
 # simple_file_saver
 
-Plugin that allows you to save files to a public or shared directory such as the Downloads folder in Android and Files in iOS.
+[![pub package](https://img.shields.io/pub/v/simple_file_saver.svg)](https://pub.dev/packages/simple_file_saver)
 
-## Getting Started
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+A Flutter plugin that allows you to save files to a public or shared directory such as 
+the Downloads folder in Android and Files in iOS.
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Usage
 
+To use this plugin, add `simple_file_saver` as a [dependency in your pubspec.yaml file](https://flutter.dev/docs/development/platform-integration/platform-channels).
+
+## Example
+
+```dart
+final result = await SimpleFileSaver.saveFile(
+    dataBytes: utf8.encode('This file is been saved to the default directory'),
+    fileName: 'file_save.txt',
+    mimeType: 'text/plain',
+);
+
+final result = await SimpleFileSaver.saveFileAs(
+    dataBytes: utf8.encode('This file is been saved as...'),
+    fileName: 'file_save_as.txt',
+    mimeType: 'text/plain',
+);
+```
