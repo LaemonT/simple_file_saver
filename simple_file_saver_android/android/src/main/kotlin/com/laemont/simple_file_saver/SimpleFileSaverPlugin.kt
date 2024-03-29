@@ -26,9 +26,10 @@ class SimpleFileSaverPlugin: FlutterPlugin, SimpleFileSaverApi, ActivityAware,
   private lateinit var onFileSaved: (Result<Boolean?>) -> Unit
   private lateinit var onFileSavedAs: (Result<Boolean?>) -> Unit
 
+  private var byteArray: ByteArray? = null
+
   companion object {
     const val CREATE_FILE = 1
-    const val EXTRA_DATA_BYTE = "EXTRA_DATA_BYTE"
     const val TAG = "SimpleFileSaverPlugin"
   }
 
@@ -80,13 +81,13 @@ class SimpleFileSaverPlugin: FlutterPlugin, SimpleFileSaverApi, ActivityAware,
           it.write(dataBytes)
         } ?: throw IOException("Failed to open output stream.")
       }
-      onFileSavedAs(Result.success(true))
+      onFileSaved(Result.success(true))
     } else {
       val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
       val fos = FileOutputStream(File(downloadDir, fileName))
       fos.write(dataBytes)
       fos.close()
-      onFileSavedAs(Result.success(true))
+      onFileSaved(Result.success(true))
     }
   }
 
@@ -96,27 +97,27 @@ class SimpleFileSaverPlugin: FlutterPlugin, SimpleFileSaverApi, ActivityAware,
     mimeType: String?,
     callback: (Result<Boolean?>) -> Unit
   ) {
+    byteArray = dataBytes
     onFileSavedAs = callback
 
     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
       addCategory(Intent.CATEGORY_OPENABLE)
       type = mimeType
       putExtra(Intent.EXTRA_TITLE, fileName)
-      putExtra(EXTRA_DATA_BYTE, dataBytes)
     }
 
     activity.startActivityForResult(intent, CREATE_FILE)
   }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?): Boolean {
+  override fun onActivityResult(requestCode: Int, resultCode: Int, result: Intent?): Boolean {
     when (requestCode) {
       CREATE_FILE -> {
         when (resultCode) {
           Activity.RESULT_OK -> {
-            val dataBytes = resultData?.getByteArrayExtra(EXTRA_DATA_BYTE)
-            resultData?.data?.also { uri ->
+            result?.data?.also { uri ->
               context.contentResolver.openOutputStream(uri)?.use {
-                it.write(dataBytes)
+                it.write(byteArray)
+                byteArray = null
               } ?: throw IOException("Failed to open output stream.")
             }
             onFileSavedAs(Result.success(true))
