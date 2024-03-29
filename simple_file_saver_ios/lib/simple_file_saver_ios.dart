@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:simple_file_saver_platform_interface/platform_interface.dart';
+import 'package:simple_file_saver_platform_interface/simple_file_saver_platform_interface.dart';
 import 'messages.g.dart' as messages;
 
 class SimpleFileSaverIos extends SimpleFileSaverPlatform {

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-import 'src/method_channel.dart';
+import 'src/method_channel_simple_file_saver.dart';
 
 /// The interface that implementations of simple_file_saver must implement.
 ///

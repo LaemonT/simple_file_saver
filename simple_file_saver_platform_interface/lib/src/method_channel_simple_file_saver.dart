@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/services.dart';
 
-import '../platform_interface.dart';
+import '../simple_file_saver_platform_interface.dart';
 
 /// An implementation of [SimpleFileSaverPlatform] that uses method channels.
 class MethodChannelSimpleFileSaver extends SimpleFileSaverPlatform {

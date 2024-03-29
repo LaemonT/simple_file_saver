@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:simple_file_saver_platform_interface/platform_interface.dart';
+import 'package:simple_file_saver_platform_interface/simple_file_saver_platform_interface.dart';
 
 void main() {
   runApp(const MyApp());
