@@ -1,3 +1,7 @@
+## 1.1.2
+
+* Remove the mimeType parameter for the downloadFileByUrl() API.
+
 ## 1.1.1
 
 * Return non-nullable boolean.
