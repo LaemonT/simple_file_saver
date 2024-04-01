@@ -48,4 +48,22 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
   }) {
     throw UnimplementedError('saveFileAs() has not been implemented.');
   }
+
+  /// Download the file by bytes.
+  Future<bool?> downloadFileByBytes({
+    required Uint8List dataBytes,
+    required String fileName,
+    String? mimeType,
+  }) {
+    throw UnimplementedError('downloadFileByBytes() has not been implemented.');
+  }
+
+  /// Download the file by url.
+  Future<bool?> downloadFileByUrl({
+    required String url,
+    required String fileName,
+    String? mimeType,
+  }) {
+    throw UnimplementedError('downloadFileByUrl() has not been implemented.');
+  }
 }
