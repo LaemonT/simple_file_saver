@@ -10,7 +10,7 @@ class MethodChannelSimpleFileSaver extends SimpleFileSaverPlatform {
   MethodChannel methodChannel = const MethodChannel('laemont/simple_file_saver');
 
   @override
-  Future<bool?> saveFile({
+  Future<bool> saveFile({
     required Uint8List dataBytes,
     required String fileName,
     String? mimeType,
@@ -22,11 +22,11 @@ class MethodChannelSimpleFileSaver extends SimpleFileSaverPlatform {
         'fileName': fileName,
         'mimeType': mimeType,
       },
-    );
+    ).then((value) => value ?? false);
   }
 
   @override
-  Future<bool?> saveFileAs({
+  Future<bool> saveFileAs({
     required Uint8List dataBytes,
     required String fileName,
     String? mimeType,
@@ -38,11 +38,11 @@ class MethodChannelSimpleFileSaver extends SimpleFileSaverPlatform {
         'fileName': fileName,
         'mimeType': mimeType,
       },
-    );
+    ).then((value) => value ?? false);
   }
 
   @override
-  Future<bool?> downloadFileByBytes({
+  Future<bool> downloadFileByBytes({
     required Uint8List dataBytes,
     required String fileName,
     String? mimeType,
@@ -54,11 +54,11 @@ class MethodChannelSimpleFileSaver extends SimpleFileSaverPlatform {
         'fileName': fileName,
         'mimeType': mimeType,
       },
-    );
+    ).then((value) => value ?? false);
   }
 
   @override
-  Future<bool?> downloadFileByUrl({
+  Future<bool> downloadFileByUrl({
     required String url,
     required String fileName,
     String? mimeType,
@@ -70,6 +70,6 @@ class MethodChannelSimpleFileSaver extends SimpleFileSaverPlatform {
         'fileName': fileName,
         'mimeType': mimeType,
       },
-    );
+    ).then((value) => value ?? false);
   }
 }

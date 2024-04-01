@@ -32,7 +32,7 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
   }
 
   /// Save the file to the default location.
-  Future<bool?> saveFile({
+  Future<bool> saveFile({
     required Uint8List dataBytes,
     required String fileName,
     String? mimeType,
@@ -41,7 +41,7 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
   }
 
   /// Prompt to the users and save the file to the specified location.
-  Future<bool?> saveFileAs({
+  Future<bool> saveFileAs({
     required Uint8List dataBytes,
     required String fileName,
     String? mimeType,
@@ -50,7 +50,7 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
   }
 
   /// Download the file by bytes.
-  Future<bool?> downloadFileByBytes({
+  Future<bool> downloadFileByBytes({
     required Uint8List dataBytes,
     required String fileName,
     String? mimeType,
@@ -59,7 +59,7 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
   }
 
   /// Download the file by url.
-  Future<bool?> downloadFileByUrl({
+  Future<bool> downloadFileByUrl({
     required String url,
     required String fileName,
     String? mimeType,
