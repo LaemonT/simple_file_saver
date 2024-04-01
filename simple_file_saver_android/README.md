@@ -1,6 +1,6 @@
 # simple_file_saver_android
 
-The iOS implementation of [`simple_file_saver`][1].
+The Android implementation of [`simple_file_saver`][1].
 
 ## Usage
 
