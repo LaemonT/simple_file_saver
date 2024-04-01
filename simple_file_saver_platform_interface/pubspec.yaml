@@ -2,7 +2,7 @@ name: simple_file_saver_platform_interface
 description: A common platform interface for the simple_file_saver plugin.
 homepage: https://github.com/LaemonT/simple_file_saver
 repository: https://github.com/LaemonT/simple_file_saver/tree/main/simple_file_saver_platform_interface
-version: 1.1.0
+version: 1.1.1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
