@@ -62,7 +62,6 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
   Future<bool> downloadFileByUrl({
     required String url,
     required String fileName,
-    String? mimeType,
   }) {
     throw UnimplementedError('downloadFileByUrl() has not been implemented.');
   }

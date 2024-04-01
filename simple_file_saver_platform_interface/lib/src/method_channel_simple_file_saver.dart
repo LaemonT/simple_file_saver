@@ -61,14 +61,12 @@ class MethodChannelSimpleFileSaver extends SimpleFileSaverPlatform {
   Future<bool> downloadFileByUrl({
     required String url,
     required String fileName,
-    String? mimeType,
   }) {
     return methodChannel.invokeMethod<bool>(
       'downloadFileByUrl',
       <String, dynamic>{
         'url': url,
         'fileName': fileName,
-        'mimeType': mimeType,
       },
     ).then((value) => value ?? false);
   }
