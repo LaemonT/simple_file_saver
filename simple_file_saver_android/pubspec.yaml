@@ -2,7 +2,7 @@ name: simple_file_saver_android
 description: Android implementation of the simple_file_saver plugin.
 homepage: https://github.com/LaemonT/simple_file_saver
 repository: https://github.com/LaemonT/simple_file_saver/tree/main/simple_file_saver_android
-version: 1.0.1
+version: 1.0.2
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
