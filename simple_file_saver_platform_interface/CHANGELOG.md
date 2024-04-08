@@ -1,3 +1,7 @@
+## 1.2.0
+
+* Add new platform APIs for the web implementation, and updates the download APIs.
+
 ## 1.1.2
 
 * Remove the mimeType parameter for the downloadFileByUrl() API.
