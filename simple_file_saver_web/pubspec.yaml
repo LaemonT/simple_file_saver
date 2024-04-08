@@ -1,0 +1,32 @@
+name: simple_file_saver_web
+description: Web implementation of the simple_file_saver plugin.
+homepage: https://github.com/LaemonT/simple_file_saver
+repository: https://github.com/LaemonT/simple_file_saver/tree/main/simple_file_saver_web
+version: 1.0.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+flutter:
+  plugin:
+    implements: simple_file_saver
+    platforms:
+      web:
+        pluginClass: SimpleFileSaverPlugin
+        fileName: simple_file_saver_web.dart
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  simple_file_saver_platform_interface: ^1.2.0
+  fetch_client: ^1.0.2
+  path: ^1.9.0
+  mime: ^1.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0

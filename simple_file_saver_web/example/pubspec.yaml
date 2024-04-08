@@ -1,0 +1,29 @@
+name: simple_file_saver_web_example
+description: Demonstrates how to use the simple_file_saver_web plugin.
+publish_to: none
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  simple_file_saver_web:
+    path: ../
+
+  simple_file_saver_platform_interface: ^1.2.0
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
