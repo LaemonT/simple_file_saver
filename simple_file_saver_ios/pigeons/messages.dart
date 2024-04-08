@@ -10,13 +10,13 @@ import 'package:pigeon/pigeon.dart';
 @HostApi()
 abstract class SimpleFileSaverApi {
   @async
-  bool? saveFile({
+  bool saveFile({
     required Uint8List dataBytes,
     required String fileName,
   });
 
   @async
-  bool? saveFileAs({
+  bool saveFileAs({
     required Uint8List dataBytes,
     required String fileName,
   });

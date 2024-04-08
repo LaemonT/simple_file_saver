@@ -2,7 +2,7 @@ name: simple_file_saver_ios
 description: iOS implementation of the simple_file_saver plugin.
 homepage: https://github.com/LaemonT/simple_file_saver
 repository: https://github.com/LaemonT/simple_file_saver/tree/main/simple_file_saver_ios
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -19,7 +19,7 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  simple_file_saver_platform_interface: ^1.0.0
+  simple_file_saver_platform_interface: ^1.2.0
 
 dev_dependencies:
   flutter_test:
