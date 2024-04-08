@@ -45,8 +45,8 @@ class FlutterError (
 
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface SimpleFileSaverApi {
-  fun saveFile(dataBytes: ByteArray, fileName: String, mimeType: String?, callback: (Result<Boolean?>) -> Unit)
-  fun saveFileAs(dataBytes: ByteArray, fileName: String, mimeType: String?, callback: (Result<Boolean?>) -> Unit)
+  fun saveFile(dataBytes: ByteArray, fileName: String, mimeType: String?, callback: (Result<Boolean>) -> Unit)
+  fun saveFileAs(dataBytes: ByteArray, fileName: String, mimeType: String?, callback: (Result<Boolean>) -> Unit)
 
   companion object {
     /** The codec used by SimpleFileSaverApi. */
@@ -64,7 +64,7 @@ interface SimpleFileSaverApi {
             val dataBytesArg = args[0] as ByteArray
             val fileNameArg = args[1] as String
             val mimeTypeArg = args[2] as String?
-            api.saveFile(dataBytesArg, fileNameArg, mimeTypeArg) { result: Result<Boolean?> ->
+            api.saveFile(dataBytesArg, fileNameArg, mimeTypeArg) { result: Result<Boolean> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))
@@ -86,7 +86,7 @@ interface SimpleFileSaverApi {
             val dataBytesArg = args[0] as ByteArray
             val fileNameArg = args[1] as String
             val mimeTypeArg = args[2] as String?
-            api.saveFileAs(dataBytesArg, fileNameArg, mimeTypeArg) { result: Result<Boolean?> ->
+            api.saveFileAs(dataBytesArg, fileNameArg, mimeTypeArg) { result: Result<Boolean> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))

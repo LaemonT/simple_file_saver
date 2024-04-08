@@ -25,7 +25,7 @@ class SimpleFileSaverApi {
 
   static const MessageCodec<Object?> pigeonChannelCodec = StandardMessageCodec();
 
-  Future<bool?> saveFile({required Uint8List dataBytes, required String fileName, String? mimeType,}) async {
+  Future<bool> saveFile({required Uint8List dataBytes, required String fileName, String? mimeType,}) async {
     const String __pigeon_channelName = 'dev.flutter.pigeon.simple_file_saver_android.SimpleFileSaverApi.saveFile';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
@@ -42,12 +42,17 @@ class SimpleFileSaverApi {
         message: __pigeon_replyList[1] as String?,
         details: __pigeon_replyList[2],
       );
+    } else if (__pigeon_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
     } else {
-      return (__pigeon_replyList[0] as bool?);
+      return (__pigeon_replyList[0] as bool?)!;
     }
   }
 
-  Future<bool?> saveFileAs({required Uint8List dataBytes, required String fileName, String? mimeType,}) async {
+  Future<bool> saveFileAs({required Uint8List dataBytes, required String fileName, String? mimeType,}) async {
     const String __pigeon_channelName = 'dev.flutter.pigeon.simple_file_saver_android.SimpleFileSaverApi.saveFileAs';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
@@ -64,8 +69,13 @@ class SimpleFileSaverApi {
         message: __pigeon_replyList[1] as String?,
         details: __pigeon_replyList[2],
       );
+    } else if (__pigeon_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
     } else {
-      return (__pigeon_replyList[0] as bool?);
+      return (__pigeon_replyList[0] as bool?)!;
     }
   }
 }

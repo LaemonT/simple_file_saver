@@ -12,7 +12,7 @@ class SimpleFileSaverAndroid extends SimpleFileSaverPlatform {
   }
 
   @override
-  Future<bool?> saveFile({
+  Future<bool> saveFile({
     required Uint8List dataBytes,
     required String fileName,
     String? mimeType,
@@ -30,7 +30,7 @@ class SimpleFileSaverAndroid extends SimpleFileSaverPlatform {
   }
 
   @override
-  Future<bool?> saveFileAs({
+  Future<bool> saveFileAs({
     required Uint8List dataBytes,
     required String fileName,
     String? mimeType,
