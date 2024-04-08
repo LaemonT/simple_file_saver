@@ -40,34 +40,4 @@ class MethodChannelSimpleFileSaver extends SimpleFileSaverPlatform {
       },
     ).then((value) => value ?? false);
   }
-
-  @override
-  Future<bool> downloadFileByBytes({
-    required Uint8List dataBytes,
-    required String fileName,
-    String? mimeType,
-  }) {
-    return methodChannel.invokeMethod<bool>(
-      'downloadFileByBytes',
-      <String, dynamic>{
-        'dataBytes': dataBytes,
-        'fileName': fileName,
-        'mimeType': mimeType,
-      },
-    ).then((value) => value ?? false);
-  }
-
-  @override
-  Future<bool> downloadFileByUrl({
-    required String url,
-    required String fileName,
-  }) {
-    return methodChannel.invokeMethod<bool>(
-      'downloadFileByUrl',
-      <String, dynamic>{
-        'url': url,
-        'fileName': fileName,
-      },
-    ).then((value) => value ?? false);
-  }
 }

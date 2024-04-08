@@ -1,8 +1,17 @@
 import 'dart:typed_data';
 
+import 'package:flutter/widgets.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:url_launcher/link.dart';
 
 import 'src/method_channel_simple_file_saver.dart';
+
+export 'package:url_launcher/link.dart';
+
+typedef DownloadLinkBuilder = Widget Function(
+  BuildContext context,
+  VoidCallback startDownload,
+);
 
 /// The interface that implementations of simple_file_saver must implement.
 ///
@@ -50,19 +59,38 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
   }
 
   /// Download the file by bytes.
-  Future<bool> downloadFileByBytes({
+  Future<void> downloadFileByBytes({
     required Uint8List dataBytes,
-    required String fileName,
-    String? mimeType,
+    String? fileName,
   }) {
     throw UnimplementedError('downloadFileByBytes() has not been implemented.');
   }
 
-  /// Download the file by url.
-  Future<bool> downloadFileByUrl({
-    required String url,
-    required String fileName,
+  /// Download the file by uri.
+  Future<void> downloadFileByUri({
+    required Uri uri,
+    String? fileName,
   }) {
     throw UnimplementedError('downloadFileByUrl() has not been implemented.');
+  }
+
+  /// Build a Link widget for the web only, and download the file by bytes
+  Widget webOnlyBytesDownloadLinkBuilder({
+    required Uint8List dataBytes,
+    String? fileName,
+    LinkTarget target = LinkTarget.blank,
+    required DownloadLinkBuilder builder,
+  }) {
+    throw UnimplementedError('webOnlyBytesDownloadLinkBuilder() has not been implemented.');
+  }
+
+  /// Build a Link widget for the web only, and download the file by Uri
+  Widget webOnlyUriDownloadLinkBuilder({
+    required Uri uri,
+    String? fileName,
+    LinkTarget target = LinkTarget.blank,
+    required DownloadLinkBuilder builder,
+  }) {
+    throw UnimplementedError('webOnlyUriDownloadLinkBuilder() has not been implemented.');
   }
 }
