@@ -7,7 +7,7 @@ public class SimpleFileSaverPlugin: NSObject, FlutterPlugin, SimpleFileSaverApi 
         SimpleFileSaverApiSetup.setUp(binaryMessenger: registrar.messenger(), api: SimpleFileSaverPlugin())
     }
     
-    func saveFile(dataBytes: FlutterStandardTypedData, fileName: String, completion: @escaping (Result<Bool?, Error>) -> Void) {
+    func saveFile(dataBytes: FlutterStandardTypedData, fileName: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         do {
             let fileUrl = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(fileName)
             print("fileUrl: \(fileUrl)")
@@ -18,7 +18,7 @@ public class SimpleFileSaverPlugin: NSObject, FlutterPlugin, SimpleFileSaverApi 
         }
     }
     
-    func saveFileAs(dataBytes: FlutterStandardTypedData, fileName: String, completion: @escaping (Result<Bool?, Error>) -> Void) {
+    func saveFileAs(dataBytes: FlutterStandardTypedData, fileName: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         let tempFileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
         do {
             try dataBytes.data.write(to: tempFileUrl)

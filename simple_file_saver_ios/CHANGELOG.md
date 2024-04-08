@@ -1,3 +1,7 @@
+## 1.0.2
+
+* Fix the return type of the native code.
+
 ## 1.0.1
 
 * Platform interface updates.

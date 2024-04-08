@@ -23,8 +23,8 @@ class SimpleFileSaverPlugin: FlutterPlugin, SimpleFileSaverApi, ActivityAware,
   private lateinit var context: Context
   private lateinit var activity: Activity
 
-  private lateinit var onFileSaved: (Result<Boolean?>) -> Unit
-  private lateinit var onFileSavedAs: (Result<Boolean?>) -> Unit
+  private lateinit var onFileSaved: (Result<Boolean>) -> Unit
+  private lateinit var onFileSavedAs: (Result<Boolean>) -> Unit
 
   private var byteArray: ByteArray? = null
 
@@ -64,7 +64,7 @@ class SimpleFileSaverPlugin: FlutterPlugin, SimpleFileSaverApi, ActivityAware,
     dataBytes: ByteArray,
     fileName: String,
     mimeType: String?,
-    callback: (Result<Boolean?>) -> Unit
+    callback: (Result<Boolean>) -> Unit
   ) {
     onFileSaved = callback
 
@@ -95,7 +95,7 @@ class SimpleFileSaverPlugin: FlutterPlugin, SimpleFileSaverApi, ActivityAware,
     dataBytes: ByteArray,
     fileName: String,
     mimeType: String?,
-    callback: (Result<Boolean?>) -> Unit
+    callback: (Result<Boolean>) -> Unit
   ) {
     byteArray = dataBytes
     onFileSavedAs = callback
