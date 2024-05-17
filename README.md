@@ -17,3 +17,15 @@ The plugin is separated into the following packages:
 [2]: ./simple_file_saver_android
 [3]: ./simple_file_saver_ios
 [4]: ./simple_file_saver_platform_interface
+[5]: https://docs.flutter.dev/packages-and-plugins/developing-packages#publish
+
+
+## [Publishing your package][5]
+Run the publish command in dry-run mode to see if everything passes analysis:
+```
+flutter pub publish --dry-run
+```
+Then publishing to pub.dev, but be sure that you are ready because publishing is forever:
+```
+flutter pub publish
+```
