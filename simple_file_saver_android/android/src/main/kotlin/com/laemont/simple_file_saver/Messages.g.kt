@@ -45,8 +45,8 @@ class FlutterError (
 
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface SimpleFileSaverApi {
-  fun saveFile(dataBytes: ByteArray, fileName: String, mimeType: String?, callback: (Result<Boolean>) -> Unit)
-  fun saveFileAs(dataBytes: ByteArray, fileName: String, mimeType: String?, callback: (Result<Boolean>) -> Unit)
+  fun saveToDownloads(dataBytes: ByteArray, filenameWithExtension: String): String
+  fun saveFileAs(dataBytes: ByteArray, filenameWithExtension: String, mimeType: String?, callback: (Result<String?>) -> Unit)
 
   companion object {
     /** The codec used by SimpleFileSaverApi. */
@@ -57,22 +57,19 @@ interface SimpleFileSaverApi {
     @Suppress("UNCHECKED_CAST")
     fun setUp(binaryMessenger: BinaryMessenger, api: SimpleFileSaverApi?) {
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.simple_file_saver_android.SimpleFileSaverApi.saveFile", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.simple_file_saver_android.SimpleFileSaverApi.saveToDownloads", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val dataBytesArg = args[0] as ByteArray
-            val fileNameArg = args[1] as String
-            val mimeTypeArg = args[2] as String?
-            api.saveFile(dataBytesArg, fileNameArg, mimeTypeArg) { result: Result<Boolean> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(wrapError(error))
-              } else {
-                val data = result.getOrNull()
-                reply.reply(wrapResult(data))
-              }
+            val filenameWithExtensionArg = args[1] as String
+            var wrapped: List<Any?>
+            try {
+              wrapped = listOf<Any?>(api.saveToDownloads(dataBytesArg, filenameWithExtensionArg))
+            } catch (exception: Throwable) {
+              wrapped = wrapError(exception)
             }
+            reply.reply(wrapped)
           }
         } else {
           channel.setMessageHandler(null)
@@ -84,9 +81,9 @@ interface SimpleFileSaverApi {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val dataBytesArg = args[0] as ByteArray
-            val fileNameArg = args[1] as String
+            val filenameWithExtensionArg = args[1] as String
             val mimeTypeArg = args[2] as String?
-            api.saveFileAs(dataBytesArg, fileNameArg, mimeTypeArg) { result: Result<Boolean> ->
+            api.saveFileAs(dataBytesArg, filenameWithExtensionArg, mimeTypeArg) { result: Result<String?> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))
