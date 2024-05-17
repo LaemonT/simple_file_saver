@@ -41,8 +41,8 @@ private func nilOrValue<T>(_ value: Any?) -> T? {
 
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol SimpleFileSaverApi {
-  func saveFile(dataBytes: FlutterStandardTypedData, fileName: String, completion: @escaping (Result<Bool, Error>) -> Void)
-  func saveFileAs(dataBytes: FlutterStandardTypedData, fileName: String, completion: @escaping (Result<Bool, Error>) -> Void)
+  func getDocumentDirectory() throws -> String
+  func saveFileAs(dataBytes: FlutterStandardTypedData, filenameWithExtension: String, completion: @escaping (Result<String?, Error>) -> Void)
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -50,31 +50,26 @@ class SimpleFileSaverApiSetup {
   /// The codec used by SimpleFileSaverApi.
   /// Sets up an instance of `SimpleFileSaverApi` to handle messages through the `binaryMessenger`.
   static func setUp(binaryMessenger: FlutterBinaryMessenger, api: SimpleFileSaverApi?) {
-    let saveFileChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.simple_file_saver_ios.SimpleFileSaverApi.saveFile", binaryMessenger: binaryMessenger)
+    let getDocumentDirectoryChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.simple_file_saver_ios.SimpleFileSaverApi.getDocumentDirectory", binaryMessenger: binaryMessenger)
     if let api = api {
-      saveFileChannel.setMessageHandler { message, reply in
-        let args = message as! [Any?]
-        let dataBytesArg = args[0] as! FlutterStandardTypedData
-        let fileNameArg = args[1] as! String
-        api.saveFile(dataBytes: dataBytesArg, fileName: fileNameArg) { result in
-          switch result {
-          case .success(let res):
-            reply(wrapResult(res))
-          case .failure(let error):
-            reply(wrapError(error))
-          }
+      getDocumentDirectoryChannel.setMessageHandler { _, reply in
+        do {
+          let result = try api.getDocumentDirectory()
+          reply(wrapResult(result))
+        } catch {
+          reply(wrapError(error))
         }
       }
     } else {
-      saveFileChannel.setMessageHandler(nil)
+      getDocumentDirectoryChannel.setMessageHandler(nil)
     }
     let saveFileAsChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.simple_file_saver_ios.SimpleFileSaverApi.saveFileAs", binaryMessenger: binaryMessenger)
     if let api = api {
       saveFileAsChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
         let dataBytesArg = args[0] as! FlutterStandardTypedData
-        let fileNameArg = args[1] as! String
-        api.saveFileAs(dataBytes: dataBytesArg, fileName: fileNameArg) { result in
+        let filenameWithExtensionArg = args[1] as! String
+        api.saveFileAs(dataBytes: dataBytesArg, filenameWithExtension: filenameWithExtensionArg) { result in
           switch result {
           case .success(let res):
             reply(wrapResult(res))

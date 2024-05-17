@@ -25,15 +25,15 @@ class SimpleFileSaverApi {
 
   static const MessageCodec<Object?> pigeonChannelCodec = StandardMessageCodec();
 
-  Future<bool> saveFile({required Uint8List dataBytes, required String fileName}) async {
-    const String __pigeon_channelName = 'dev.flutter.pigeon.simple_file_saver_ios.SimpleFileSaverApi.saveFile';
+  Future<String> getDocumentDirectory() async {
+    const String __pigeon_channelName = 'dev.flutter.pigeon.simple_file_saver_ios.SimpleFileSaverApi.getDocumentDirectory';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
       binaryMessenger: __pigeon_binaryMessenger,
     );
     final List<Object?>? __pigeon_replyList =
-        await __pigeon_channel.send(<Object?>[dataBytes, fileName]) as List<Object?>?;
+        await __pigeon_channel.send(null) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {
@@ -48,11 +48,11 @@ class SimpleFileSaverApi {
         message: 'Host platform returned null value for non-null return value.',
       );
     } else {
-      return (__pigeon_replyList[0] as bool?)!;
+      return (__pigeon_replyList[0] as String?)!;
     }
   }
 
-  Future<bool> saveFileAs({required Uint8List dataBytes, required String fileName}) async {
+  Future<String?> saveFileAs({required Uint8List dataBytes, required String filenameWithExtension}) async {
     const String __pigeon_channelName = 'dev.flutter.pigeon.simple_file_saver_ios.SimpleFileSaverApi.saveFileAs';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
@@ -60,7 +60,7 @@ class SimpleFileSaverApi {
       binaryMessenger: __pigeon_binaryMessenger,
     );
     final List<Object?>? __pigeon_replyList =
-        await __pigeon_channel.send(<Object?>[dataBytes, fileName]) as List<Object?>?;
+        await __pigeon_channel.send(<Object?>[dataBytes, filenameWithExtension]) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {
@@ -69,13 +69,8 @@ class SimpleFileSaverApi {
         message: __pigeon_replyList[1] as String?,
         details: __pigeon_replyList[2],
       );
-    } else if (__pigeon_replyList[0] == null) {
-      throw PlatformException(
-        code: 'null-error',
-        message: 'Host platform returned null value for non-null return value.',
-      );
     } else {
-      return (__pigeon_replyList[0] as bool?)!;
+      return (__pigeon_replyList[0] as String?);
     }
   }
 }
