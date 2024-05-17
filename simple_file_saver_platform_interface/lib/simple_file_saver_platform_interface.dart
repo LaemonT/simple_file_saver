@@ -1,12 +1,13 @@
-import 'dart:typed_data';
-
 import 'package:flutter/widgets.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:url_launcher/link.dart';
 
-import 'src/method_channel_simple_file_saver.dart';
+import 'src/default_method_channel_platform.dart';
+import 'src/types/file_save_info.dart';
 
 export 'package:url_launcher/link.dart';
+
+export 'src/types/file_save_info.dart';
 
 typedef DownloadLinkBuilder = Widget Function(
   BuildContext context,
@@ -26,11 +27,11 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static SimpleFileSaverPlatform _instance = MethodChannelSimpleFileSaver();
+  static SimpleFileSaverPlatform _instance = DefaultSimpleFileSaverPlatform();
 
   /// The default instance of [SimpleFileSaverPlatform] to use.
   ///
-  /// Defaults to [MethodChannelSimpleFileSaver].
+  /// Defaults to [DefaultSimpleFileSaverPlatform].
   static SimpleFileSaverPlatform get instance => _instance;
 
   /// Platform-specific plugins should set this with their own platform-specific
@@ -40,57 +41,20 @@ abstract class SimpleFileSaverPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  /// Save the file to the default location.
-  Future<bool> saveFile({
-    required Uint8List dataBytes,
-    required String fileName,
-    String? mimeType,
+  /// Save file to the default directory.
+  Future<String?> saveFile({
+    required FileSaveInfo fileInfo,
+    bool saveAs = false, // Save to the default location silently or prompt the user to save as.
   }) {
     throw UnimplementedError('saveFile() has not been implemented.');
   }
 
-  /// Prompt to the users and save the file to the specified location.
-  Future<bool> saveFileAs({
-    required Uint8List dataBytes,
-    required String fileName,
-    String? mimeType,
-  }) {
-    throw UnimplementedError('saveFileAs() has not been implemented.');
-  }
-
-  /// Download the file by bytes.
-  Future<void> downloadFileByBytes({
-    required Uint8List dataBytes,
-    String? fileName,
-  }) {
-    throw UnimplementedError('downloadFileByBytes() has not been implemented.');
-  }
-
-  /// Download the file by uri.
-  Future<void> downloadFileByUri({
-    required Uri uri,
-    String? fileName,
-  }) {
-    throw UnimplementedError('downloadFileByUrl() has not been implemented.');
-  }
-
-  /// Build a Link widget for the web only, and download the file by bytes
-  Widget webOnlyBytesDownloadLinkBuilder({
-    required Uint8List dataBytes,
-    String? fileName,
+  /// Build a Link widget to enable the right click option 'save link as' on the web platform
+  Widget downloadLinkBuilder({
+    required FileSaveInfo fileInfo,
     LinkTarget target = LinkTarget.blank,
     required DownloadLinkBuilder builder,
   }) {
-    throw UnimplementedError('webOnlyBytesDownloadLinkBuilder() has not been implemented.');
-  }
-
-  /// Build a Link widget for the web only, and download the file by Uri
-  Widget webOnlyUriDownloadLinkBuilder({
-    required Uri uri,
-    String? fileName,
-    LinkTarget target = LinkTarget.blank,
-    required DownloadLinkBuilder builder,
-  }) {
-    throw UnimplementedError('webOnlyUriDownloadLinkBuilder() has not been implemented.');
+    throw UnimplementedError('downloadLinkBuilder() has not been implemented, and should only be used for web.');
   }
 }
