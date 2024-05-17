@@ -12,7 +12,7 @@ dependencies:
   simple_file_saver_web:
     path: ../
 
-  simple_file_saver_platform_interface: ^1.2.0
+  simple_file_saver_platform_interface: ^2.0.0
 
 dev_dependencies:
   integration_test:

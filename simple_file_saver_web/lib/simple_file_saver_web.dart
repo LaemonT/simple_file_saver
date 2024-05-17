@@ -1,11 +1,9 @@
 import 'dart:html' as html;
 import 'dart:typed_data';
 
-import 'package:fetch_client/fetch_client.dart' as fetch_api;
+import 'package:fetch_client/fetch_client.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:mime/mime.dart' as mime;
-import 'package:path/path.dart' as path;
 import 'package:simple_file_saver_platform_interface/simple_file_saver_platform_interface.dart';
 
 class SimpleFileSaverPlugin extends SimpleFileSaverPlatform {
@@ -14,137 +12,111 @@ class SimpleFileSaverPlugin extends SimpleFileSaverPlatform {
   }
 
   @override
-  Future<void> downloadFileByBytes({
-    required Uint8List dataBytes,
-    String? fileName,
+  Future<String?> saveFile({
+    required FileSaveInfo fileInfo,
+    bool saveAs = false,
   }) async {
-    // Create a blob from bytes
-    final blob = makeBlob(dataBytes);
+    final String blobUrl;
+    switch (fileInfo) {
+      case FileBytesInfo fileInfo:
+        // Make file download url from bytes
+        blobUrl = makeBlobDownloadUrl(fileInfo.bytes, fileInfo.mimeType);
+        break;
+      case FileUrlInfo fileInfo:
+        // Fetch data and download from local blob to avoid opening the url due to cross origin access.
+        final dataBytes = await fetchData(fileInfo);
+        // Make file download url from bytes
+        blobUrl = makeBlobDownloadUrl(dataBytes, fileInfo.mimeType);
+        break;
+      default:
+        throw 'Undefined type.';
+    }
 
-    // Create file url
-    final url = makeUrl(blob);
+    // Download the file from blobUrl
+    download(blobUrl, fileInfo);
 
-    // Download the file from url
-    download(url, blob.type, fileName);
+    return 'The file save method on the web platform depends on the browser, so the path is not available.';
   }
 
   @override
-  Future<void> downloadFileByUri({
-    required Uri uri,
-    String? fileName,
-  }) async {
-    // Fetch data from the uri
-    final dataBytes = await fetchData(uri);
-
-    // Create a blob from bytes
-    final blob = makeBlob(dataBytes);
-
-    // Create file url
-    final url = makeUrl(blob);
-
-    // Download the file from url
-    download(url, blob.type, fileName ?? uri.pathSegments.last);
-  }
-
-  @override
-  Widget webOnlyBytesDownloadLinkBuilder({
-    required Uint8List dataBytes,
-    String? fileName,
-    LinkTarget target = LinkTarget.defaultTarget,
+  Widget downloadLinkBuilder({
+    required FileSaveInfo fileInfo,
+    LinkTarget target = LinkTarget.blank,
     required DownloadLinkBuilder builder,
   }) {
-    // Create a blob from bytes
-    final blob = makeBlob(dataBytes);
+    switch (fileInfo) {
+      case FileBytesInfo fileInfo:
+        // Make file download url from bytes
+        final blobUrl = makeBlobDownloadUrl(fileInfo.bytes, fileInfo.mimeType);
+        // Build a Link widget
+        return Link(
+          uri: Uri.parse(blobUrl),
+          target: target,
+          builder: (context, _) => builder.call(
+            context,
+            () {
+              // Download the file from blobUrl
+              download(blobUrl, fileInfo);
+            },
+          ),
+        );
+      case FileUrlInfo fileInfo:
+        // Build a Link widget
+        return Link(
+          uri: fileInfo.uri,
+          target: target,
+          builder: (context, _) => builder.call(
+            context,
+            () async {
+              // Fetch data and download from local blob to avoid opening the url due to cross origin access.
+              final dataBytes = await fetchData(fileInfo);
 
-    // Create file url
-    final url = makeUrl(blob);
+              // Make file download url from bytes
+              final blobUrl = makeBlobDownloadUrl(dataBytes, fileInfo.mimeType);
 
-    // Build a Link widget
-    return Link(
-      uri: Uri.parse(url),
-      target: target,
-      builder: (context, _) => builder.call(
-        context,
-        () {
-          download(url, blob.type, fileName);
-        },
-      ),
-    );
+              // Download the file from blobUrl
+              download(blobUrl, fileInfo);
+            },
+          ),
+        );
+      default:
+        throw 'Undefined type.';
+    }
   }
 
-  @override
-  Widget webOnlyUriDownloadLinkBuilder({
-    required Uri uri,
-    String? fileName,
-    LinkTarget target = LinkTarget.defaultTarget,
-    required DownloadLinkBuilder builder,
-  }) {
-    // Build a Link widget
-    return Link(
-      uri: uri,
-      target: target,
-      builder: (context, _) => builder.call(
-        context,
-        () async {
-          // Fetch data from the uri
-          final dataBytes = await fetchData(uri);
-
-          // Create a blob from bytes
-          final blob = makeBlob(dataBytes);
-
-          // Create file url
-          final url = makeUrl(blob);
-
-          // Download
-          download(url, blob.type, fileName);
-        },
-      ),
-    );
-  }
-
-  Future<Uint8List> fetchData(Uri uri) {
+  // This method is required since "download only works for same-origin URLs, or the blob: and data: schemes."
+  Future<Uint8List> fetchData(
+    FileUrlInfo fileInfo,
+  ) {
     // Fetch the resource data bytes
-    return fetch_api.FetchClient(
-      mode: fetch_api.RequestMode.cors,
-    ).readBytes(uri);
+    return FetchClient(
+      mode: RequestMode.cors,
+    ).readBytes(fileInfo.uri);
   }
 
-  html.Blob makeBlob(Uint8List dataBytes) {
-    // Find the MIME type of the file
-    final mimeType = mime.lookupMimeType(
-      '',
-      headerBytes: dataBytes.sublist(0, mime.defaultMagicNumbersMaxLength),
-    );
-
+  String makeBlobDownloadUrl(Uint8List dataBytes, String? mimeType) {
     // Create the file object locally
-    return html.Blob([dataBytes], mimeType);
-  }
+    final blob = html.Blob([dataBytes], mimeType);
 
-  String makeUrl(html.Blob blob) {
     // Create resource URL from the BLOB
     return html.Url.createObjectUrlFromBlob(blob);
   }
 
   void download(
-    String url,
-    String type,
-    String? fileName,
+    String blobUrl,
+    FileSaveInfo fileInfo,
   ) {
-    // Make the file name and the extension
-    final name = fileName == null ? url.split('/').last : path.basenameWithoutExtension(fileName);
-    final extension = path.extension(
-      fileName ?? mime.extensionFromMime(type),
-    );
-    final downloadFileName = extension.length > 1 ? '$name$extension' : name;
-
     // Create an anchor element and simulate a click action
-    html.AnchorElement(href: url) // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#href
-      ..download = downloadFileName // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download
-      ..target = 'blank' // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#href
+    html.AnchorElement(href: blobUrl)
+      // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download
+      ..download = fileInfo.filenameWithExtension
+      // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
+      ..target = 'blank'
       ..click()
       ..remove();
 
     // Cleanup
-    html.Url.revokeObjectUrl(url);
+    html.Url.revokeObjectUrl(blobUrl);
   }
 }

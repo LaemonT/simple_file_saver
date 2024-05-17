@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'package:simple_file_saver_platform_interface/simple_file_saver_platform_interface.dart';
 
+const testUrl = 'https://cdn.glitch.me/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg';
+
 void main() {
   runApp(const MyApp());
 }
@@ -29,12 +31,55 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                TextButton(
+                  child: const Text('Click to save file from bytes'),
+                  onPressed: () async {
+                    final result = await SimpleFileSaverPlatform.instance.saveFile(
+                      fileInfo: FileSaveInfo.fromBytes(
+                        bytes: utf8.encode('Simple file saver test'),
+                        basename: 'test_save_from_bytes',
+                        extension: 'txt',
+                      ),
+                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('File download by bytes:\n$result'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  child: const Text('Click to save file from URL'),
+                  onPressed: () async {
+                    final result = await SimpleFileSaverPlatform.instance.saveFile(
+                      fileInfo: FileSaveInfo.fromUrl(
+                        url: testUrl,
+                        basename: 'test_save_from_url',
+                      ),
+                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('File download by bytes:\n$result'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
-                  child: SimpleFileSaverPlatform.instance.webOnlyBytesDownloadLinkBuilder(
-                    dataBytes: utf8.encode('Simple file saver test'),
+                  child: SimpleFileSaverPlatform.instance.downloadLinkBuilder(
+                    fileInfo: FileSaveInfo.fromBytes(
+                      bytes: utf8.encode('Simple file saver test'),
+                      basename: 'test_dl_from_bytes',
+                      extension: 'txt',
+                    ),
                     builder: (context, startDownload) => TextButton(
-                      child: const Text('Download by Bytes'),
+                      child: const Text('Download link from bytes'),
                       onPressed: () async {
                         startDownload.call();
                         if (context.mounted) {
@@ -51,19 +96,19 @@ class _MyAppState extends State<MyApp> {
                 const SizedBox(height: 20),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
-                  child: SimpleFileSaverPlatform.instance.webOnlyUriDownloadLinkBuilder(
-                    uri: Uri.parse(
-                      AssetManager().getAssetUrl('sample.pdf'),
+                  child: SimpleFileSaverPlatform.instance.downloadLinkBuilder(
+                    fileInfo: FileSaveInfo.fromUrl(
+                      url: AssetManager().getAssetUrl('sample.pdf'),
+                      basename: 'test_dl_from_local_url',
                     ),
-                    fileName: 'pdf_file_sample',
                     builder: (context, startDownload) => TextButton(
-                      child: const Text('Download by Uri (from assets)'),
+                      child: const Text('Download link from URL (local asset)'),
                       onPressed: () async {
                         startDownload.call();
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('File download by uri.'),
+                              content: Text('File download by URL.'),
                             ),
                           );
                         }
@@ -74,18 +119,19 @@ class _MyAppState extends State<MyApp> {
                 const SizedBox(height: 20),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
-                  child: SimpleFileSaverPlatform.instance.webOnlyUriDownloadLinkBuilder(
-                    uri: Uri.parse(
-                        'https://cdn.glitch.me/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg'),
-                    fileName: 'test_file_dl.svg',
+                  child: SimpleFileSaverPlatform.instance.downloadLinkBuilder(
+                    fileInfo: FileSaveInfo.fromUrl(
+                      url: testUrl,
+                      basename: 'test_dl_from_remote_url',
+                    ),
                     builder: (context, startDownload) => TextButton(
-                      child: const Text('Download by Uri (from remote)'),
+                      child: const Text('Download link from URL (remote resource)'),
                       onPressed: () async {
                         startDownload.call();
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('File download by uri.'),
+                              content: Text('File download by URL.'),
                             ),
                           );
                         }
