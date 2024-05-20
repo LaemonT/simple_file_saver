@@ -10,14 +10,16 @@ Widget buildWidget(BuildContext context) => Column(
           child: const Text('Click to save file'),
           onPressed: () async {
             final result = await SimpleFileSaver.saveFile(
-              dataBytes: utf8.encode('Simple file saver test'),
-              fileName: 'test.txt',
-              mimeType: 'text/plain',
+              fileInfo: FileSaveInfo.fromBytes(
+                bytes: utf8.encode('Simple file saver test'),
+                basename: 'test_save',
+                extension: 'txt',
+              ),
             );
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('File saved? $result'),
+                  content: Text('File saved to path: $result'),
                 ),
               );
             }
@@ -27,15 +29,18 @@ Widget buildWidget(BuildContext context) => Column(
         TextButton(
           child: const Text('Click to save file as...'),
           onPressed: () async {
-            final result = await SimpleFileSaver.saveFileAs(
-              dataBytes: utf8.encode('Simple file saver test'),
-              fileName: 'test_save_as.txt',
-              mimeType: 'text/plain',
+            final result = await SimpleFileSaver.saveFile(
+              fileInfo: FileSaveInfo.fromBytes(
+                bytes: utf8.encode('Simple file saver test'),
+                basename: 'test_save_as',
+                extension: 'txt',
+              ),
+              saveAs: true,
             );
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('File saved? $result'),
+                  content: Text('File saved to path: $result'),
                 ),
               );
             }

@@ -9,8 +9,12 @@ Widget buildWidget(BuildContext context) => Column(
       children: [
         MouseRegion(
           cursor: SystemMouseCursors.click,
-          child: SimpleFileSaver.webOnlyBytesDownloadLinkBuilder(
-            dataBytes: utf8.encode('Simple file saver test'),
+          child: SimpleFileSaver.downloadLinkBuilder(
+            fileInfo: FileSaveInfo.fromBytes(
+              bytes: utf8.encode('Simple file saver test'),
+              basename: 'test_save',
+              extension: 'txt',
+            ),
             builder: (_, startDownload) => TextButton(
               child: const Text('Download by Bytes'),
               onPressed: () async {
@@ -29,11 +33,12 @@ Widget buildWidget(BuildContext context) => Column(
         const SizedBox(height: 20),
         MouseRegion(
           cursor: SystemMouseCursors.click,
-          child: SimpleFileSaver.webOnlyUriDownloadLinkBuilder(
-            uri: Uri.parse(
-              AssetManager().getAssetUrl('sample.pdf'),
+          child: SimpleFileSaver.downloadLinkBuilder(
+            fileInfo: FileSaveInfo.fromUrl(
+              url: AssetManager().getAssetUrl('sample.pdf'),
+              basename: 'pdf_file_sample',
+              extension: 'pdf',
             ),
-            fileName: 'pdf_file_sample',
             builder: (_, startDownload) => TextButton(
               child: const Text('Download by Uri (from assets)'),
               onPressed: () async {
@@ -52,9 +57,12 @@ Widget buildWidget(BuildContext context) => Column(
         const SizedBox(height: 20),
         MouseRegion(
           cursor: SystemMouseCursors.click,
-          child: SimpleFileSaver.webOnlyUriDownloadLinkBuilder(
-            uri: Uri.parse('https://cdn.glitch.me/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg'),
-            fileName: 'test_file_dl.svg',
+          child: SimpleFileSaver.downloadLinkBuilder(
+            fileInfo: FileSaveInfo.fromUrl(
+              url: 'https://picsum.photos/id/237/200/300',
+              basename: 'test_file_dl',
+              extension: 'jpg',
+            ),
             builder: (_, startDownload) => TextButton(
               child: const Text('Download by Uri (from remote)'),
               onPressed: () async {

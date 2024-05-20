@@ -14,14 +14,33 @@ To use this plugin, add `simple_file_saver` as a [dependency in your pubspec.yam
 
 ```dart
 final result = await SimpleFileSaver.saveFile(
-    dataBytes: utf8.encode('This file is been saved to the default directory'),
-    fileName: 'file_save.txt',
-    mimeType: 'text/plain',
+    fileInfo: FileSaveInfo.fromBytes(
+        bytes: utf8.encode('This file is saved to the default directory'),
+        basename: 'file_save',
+        extension: 'txt',
+    ),
 );
 
-final result = await SimpleFileSaver.saveFileAs(
-    dataBytes: utf8.encode('This file is been saved as...'),
-    fileName: 'file_save_as.txt',
-    mimeType: 'text/plain',
+final result = await SimpleFileSaver.saveFile(
+    fileInfo: FileSaveInfo.fromBytes(
+        bytes: utf8.encode('This file is saved to the user picked directory'),
+        basename: 'file_save_as',
+        extension: 'txt',
+    ),
+    saveAs: true,
 );
+
+SimpleFileSaver.downloadLinkBuilder(
+    fileInfo: FileSaveInfo.fromUrl(
+        url: 'https://picsum.photos/id/237/200/300',
+        basename: 'test_file_dl',
+        extension: 'jpg',
+    ),
+    builder: (_, startDownload) => TextButton(
+        child: const Text('Download by Uri (from remote)'),
+        onPressed: () async {
+            startDownload.call();
+        },
+    ),
+),
 ```
