@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:simple_file_saver/simple_file_saver.dart';
 
 import 'conditional_widget.dart';
 
@@ -22,7 +24,34 @@ class _MyAppState extends State<MyApp> {
           ),
           body: Builder(
             builder: (context) => Center(
-              child: buildWidget(context),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  buildWidget(context),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    child: const Text('Test file save from assets'),
+                    onPressed: () async {
+                      final byteData = await rootBundle.load("assets/sample.pdf");
+                      final result = await SimpleFileSaver.saveFile(
+                        fileInfo: FileSaveInfo.fromBytes(
+                          bytes: byteData.buffer.asUint8List(),
+                          basename: 'pdf_file_sample',
+                          extension: 'pdf',
+                        ),
+                        saveAs: true,
+                      );
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('File saved to path: $result'),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
