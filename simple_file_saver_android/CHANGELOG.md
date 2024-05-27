@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Fixed an error when receiving activity results from intents opened by the other packages (#1)
+
 ## 2.0.0
 
 * BREAKING CHANGE: Conforms to the new API changes in the platform interface.

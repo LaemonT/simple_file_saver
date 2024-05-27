@@ -19,7 +19,7 @@ class FileSaveManager(var activity: Activity) :
     private var byteArray: ByteArray? = null
 
     companion object {
-        const val CREATE_FILE = 1
+        const val CREATE_FILE = 10001
     }
 
     fun saveToDownloads(
@@ -33,6 +33,7 @@ class FileSaveManager(var activity: Activity) :
                     put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
                 }
 
+                // Create a record in the MediaStore
                 val uri = insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
                     ?: throw IOException("Failed to create new MediaStore record.")
 
@@ -40,12 +41,6 @@ class FileSaveManager(var activity: Activity) :
                 openOutputStream(uri)?.use {
                     it.write(dataBytes)
                 } ?: throw IOException("Failed to open output stream.")
- 
-//                query(uri, null, null, null, null)?.use {
-//                    it.moveToFirst()
-//                    val columnIndex = it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-//                    return it.getString(columnIndex)
-//                } ?: throw IOException("Failed to query the MediaStore.")
 
                 return uri.path
             }
@@ -67,6 +62,7 @@ class FileSaveManager(var activity: Activity) :
             FileOutputStream(file).use {
                 it.write(dataBytes)
             }
+
             return file.path
         }
     }
@@ -102,10 +98,9 @@ class FileSaveManager(var activity: Activity) :
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, result: Intent?): Boolean {
-        require(onFileSavedAs != null) { "onFileSavedAs callback is NULL" }
-
         when (requestCode) {
             CREATE_FILE -> {
+                require(onFileSavedAs != null) { "onFileSavedAs callback is NULL" }
                 when (resultCode) {
                     Activity.RESULT_OK -> {
                         val uri = result?.data ?: throw IOException("Failed to create the file.")
