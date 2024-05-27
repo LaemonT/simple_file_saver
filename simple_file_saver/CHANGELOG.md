@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Fixed an error in Android when receiving activity results from intents opened by the other packages (#1)
+
 ## 2.0.0
 
 * BREAKING CHANGE: The API in now simplified into one single method `saveFile()` and an additional method `downloadLinkBuilder()` only for the web platform.
