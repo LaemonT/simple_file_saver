@@ -1,6 +1,6 @@
 ## 2.0.1
 
-* Fixed an error in Android when receiving activity results from intents opened by the other packages (#1)
+* Fixed an error in Android when receiving activity results from intents opened by the other packages ([#1](https://github.com/LaemonT/simple_file_saver/issues/1))
 
 ## 2.0.0
 
