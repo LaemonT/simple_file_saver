@@ -1,10 +1,11 @@
-import 'dart:html' as html;
+import 'dart:js_interop';
 import 'dart:typed_data';
 
 import 'package:fetch_client/fetch_client.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:simple_file_saver_platform_interface/simple_file_saver_platform_interface.dart';
+import 'package:web/web.dart' as web;
 
 class SimpleFileSaverPlugin extends SimpleFileSaverPlatform {
   static void registerWith(Registrar registrar) {
@@ -96,10 +97,12 @@ class SimpleFileSaverPlugin extends SimpleFileSaverPlatform {
 
   String makeBlobDownloadUrl(Uint8List dataBytes, String? mimeType) {
     // Create the file object locally
-    final blob = html.Blob([dataBytes], mimeType);
+    final blob = mimeType == null
+        ? web.Blob([dataBytes.toJS].toJS)
+        : web.Blob([dataBytes.toJS].toJS, web.BlobPropertyBag(type: mimeType));
 
     // Create resource URL from the BLOB
-    return html.Url.createObjectUrlFromBlob(blob);
+    return web.URL.createObjectURL(blob);
   }
 
   void download(
@@ -108,7 +111,8 @@ class SimpleFileSaverPlugin extends SimpleFileSaverPlatform {
   ) {
     // Create an anchor element and simulate a click action
     // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#href
-    html.AnchorElement(href: blobUrl)
+    web.HTMLAnchorElement()
+      ..href = blobUrl
       // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download
       ..download = fileInfo.filenameWithExtension
       // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
@@ -117,6 +121,6 @@ class SimpleFileSaverPlugin extends SimpleFileSaverPlatform {
       ..remove();
 
     // Cleanup
-    html.Url.revokeObjectUrl(blobUrl);
+    web.URL.revokeObjectURL(blobUrl);
   }
 }
